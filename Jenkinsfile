@@ -55,13 +55,15 @@ stages {
     }
 
     stage('Deploy to EKS') {
-        steps {
+    steps {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
             sh '''
             aws eks --region $AWS_REGION update-kubeconfig --name my-eks-cluster
             kubectl apply -f Deployment.yml
             '''
         }
     }
+}
 
 }
 }
