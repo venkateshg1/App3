@@ -5,8 +5,8 @@ agent any
 
 environment {
     AWS_ACCOUNT_ID = "123456789012"
-    AWS_REGION = "ap-south-1"
-    ECR_REPO = "demo-app"
+    AWS_REGION = "us-east-1"
+    ECR_REPO = "demo"
     IMAGE_TAG = "latest"
 }
 
@@ -14,7 +14,7 @@ stages {
 
     stage('Checkout Code') {
         steps {
-            git 'https://github.com/your-repo/demo-app.git'
+            git 'https://github.com/venkateshg1/App3.git'
         }
     }
 
