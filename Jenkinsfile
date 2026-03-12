@@ -27,7 +27,7 @@ stages {
 
     stage('Login to AWS ECR') {
     steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-Credentials']]) {
             sh '''
             aws ecr get-login-password --region $AWS_REGION \
             | docker login --username AWS \
