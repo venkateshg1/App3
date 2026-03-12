@@ -14,9 +14,19 @@ spec:
     spec:
       containers:
       - name: demo
-        image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/demo:latest
+        image: 273354646339.dkr.ecr.us-east-1.amazonaws.com/demo:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+
+---
 
 apiVersion: v1
 kind: Service
