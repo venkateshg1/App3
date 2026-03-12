@@ -37,13 +37,24 @@ stages {
         }
     }
 
-    stage('Push Image to ECR') {
+    stage('Tag Docker Image') {
         steps {
             sh '''
-            docker push $ECR_URI/$ECR_REPO:$IMAGE_TAG
+            docker tag $ECR_REPO:$IMAGE_TAG \
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
             '''
         }
     }
+
+    stage('Push Image to ECR') {
+        steps {
+            sh '''
+            docker push \
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
+            '''
+        }
+    }
+
 
     stage('Deploy to EKS') {
         steps {
