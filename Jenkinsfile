@@ -4,7 +4,7 @@ agent any
 environment {
     AWS_ACCOUNT_ID = "273354646339"
     AWS_REGION = "us-east-1"
-    ECR_REPO = "App3"
+    ECR_REPO = "app3"
     IMAGE_TAG = "latest"
 }
 
