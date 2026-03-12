@@ -1,13 +1,6 @@
 pipeline {
 agent any
 
-environment {
-    AWS_ACCOUNT_ID = "123456789012"
-    AWS_REGION = "us-east-1"
-    ECR_REPO = "demo"
-    IMAGE_TAG = "latest"
-}
-
 stages {
 
     stage('Checkout Code') {
@@ -18,7 +11,6 @@ stages {
 
     stage('Build Docker Image') {
         steps {
-            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-Credentials']]) {
             sh '''
             docker build -t $ECR_REPO:$IMAGE_TAG .
             '''
@@ -27,6 +19,7 @@ stages {
 
     stage('Login to AWS ECR') {
         steps {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-Credentials']]) {
             sh '''
             aws ecr get-login-password --region $AWS_REGION | \
             docker login --username AWS \
