@@ -6,6 +6,7 @@ environment {
     AWS_REGION = "us-east-1"
     ECR_REPO = "app3"
     IMAGE_TAG = "latest"
+    ECR_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 }
 
 stages {
@@ -19,7 +20,7 @@ stages {
     stage('Build Docker Image') {
         steps {
             sh '''
-            docker build -t $ECR_REPO:$IMAGE_TAG .
+            docker build -t $ECR_URI/$ECR_REPO:$IMAGE_TAG .
             '''
         }
     }
@@ -27,28 +28,19 @@ stages {
     stage('Login to AWS ECR') {
         steps {
             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-Credentials']]) {
-            sh '''
-            aws ecr get-login-password --region $AWS_REGION | \
-            docker login --username AWS \
-            --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-            '''
-        }
-    }
-    }
-    stage('Tag Docker Image') {
-        steps {
-            sh '''
-            docker tag $ECR_REPO:$IMAGE_TAG \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
-            '''
+                sh '''
+                aws ecr get-login-password --region $AWS_REGION | \
+                docker login --username AWS \
+                --password-stdin $ECR_URI
+                '''
+            }
         }
     }
 
     stage('Push Image to ECR') {
         steps {
             sh '''
-            docker push \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
+            docker push $ECR_URI/$ECR_REPO:$IMAGE_TAG
             '''
         }
     }
