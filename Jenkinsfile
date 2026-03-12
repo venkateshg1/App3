@@ -18,6 +18,7 @@ stages {
 
     stage('Build Docker Image') {
         steps {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-Credentials']]) {
             sh '''
             docker build -t $ECR_REPO:$IMAGE_TAG .
             '''
