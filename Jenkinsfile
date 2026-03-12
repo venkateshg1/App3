@@ -6,7 +6,6 @@ environment {
     AWS_REGION = "us-east-1"
     ECR_REPO = "demo"
     IMAGE_TAG = "latest"
-    ECR_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 }
 
 stages {
@@ -26,16 +25,12 @@ stages {
     }
 
     stage('Login to AWS ECR') {
-        steps {
-            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-Credentials']]) {
-                sh '''
-                aws ecr get-login-password --region $AWS_REGION | \
-                docker login --username AWS \
-                --password-stdin $ECR_URI
-                '''
-            }
-        }
-    }
+    sh '''
+    aws ecr get-login-password --region us-east-1 \
+    | docker login --username AWS \
+    --password-stdin 273354646339.dkr.ecr.us-east-1.amazonaws.com
+    '''
+}
 
     stage('Tag Docker Image') {
         steps {
