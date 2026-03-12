@@ -25,11 +25,13 @@ stages {
     }
 
     stage('Login to AWS ECR') {
+    steps {
         sh '''
-        aws ecr get-login-password --region us-east-1 \
+        aws ecr get-login-password --region $AWS_REGION \
         | docker login --username AWS \
-        --password-stdin 273354646339.dkr.ecr.us-east-1.amazonaws.com
+        --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
         '''
+    }
 }
 
     stage('Tag Docker Image') {
