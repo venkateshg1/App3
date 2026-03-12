@@ -27,7 +27,7 @@ stages {
             '''
         }
     }
-
+    }
     stage('Tag Docker Image') {
         steps {
             sh '''
@@ -55,6 +55,5 @@ stages {
         }
     }
 
-}
 }
 }
