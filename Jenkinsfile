@@ -1,7 +1,12 @@
 pipeline {
 agent any
 
-environment { AWS_REGION = "us-east-1" AWS_ACCOUNT_ID = "273354646339" ECR_REPO = "App3" IMAGE_TAG = "latest" }
+environment {
+    AWS_ACCOUNT_ID = "273354646339"
+    AWS_REGION = "us-east-1"
+    ECR_REPO = "App3"
+    IMAGE_TAG = "latest"
+}
 
 stages {
 
